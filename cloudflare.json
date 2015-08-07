@@ -1,0 +1,16 @@
+{
+    
+    "name": "BraciolApp",
+    "description": "Restaurants Review",
+    "version": "0.1",
+    "category": "webmaster",
+    "config":{
+        "details":{
+            "Language": "Italian",
+            "Price": "Free",
+            "Restrictions": "None",
+            "TOS":"http://www.cloudflare.com/terms",
+            "has_js": true
+        }
+    }
+}

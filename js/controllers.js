@@ -1,66 +1,43 @@
-angular.module('fitTime.controllers', ['fitTime.services', 'ParseServices'])
+angular.module('app.controllers', ['ui.bootstrap', 'ngAnimate', 'ngFileUpload', 'app.services', 'ParseServices'])
 
-.controller('LoginCtrl', function($scope, $state, $stateParams) {
+.controller('HomeCtrl', function($scope, ParseObject, ParseQuery) {
 
-	$scope.scenario = 'Log in';
-	$scope.currentUser = Parse.User.current();
-
-	$scope.signUp = function(form) {
-		var user = new Parse.User();
-		user.set("email", form.email);
-		user.set("username", form.username);
-		user.set("password", form.password);
-
-		user.signUp(null, {
-			success: function(user) {
-				$scope.currentUser = user;
-				console.log(user);
-				$scope.$apply();
-			},
-			error: function(user, error) {
-				alert("Unable to sign up:  " + error.code + " " + error.message);
+	function getAllRestaurants(){
+		var query = new Parse.Query('Restaurants');
+		ParseQuery(query, {functionToCall:'find'}).then(function(restaurants){
+			$scope.allRestaurants = [];
+			for(var i=0; i<restaurants.length; i++)
+			{
+				$scope.allRestaurants.push(new ParseObject(restaurants[i]), "restaurantId");
 			}
-		});
-	};
-
-	$scope.logIn = function(form) {
-		Parse.User.logIn(form.username, form.password, {
-			success: function(user) {
-				$scope.currentUser = user;
-				console.log(user);
-				$scope.$apply();
-			},
-			error: function(user, error) {
-				alert("Unable to log in: " + error.code + " " + error.message);
-			}
-		});
-	};
-
-	$scope.logOut = function(form) {
-		Parse.User.logOut();
-		$scope.currentUser = null;
-	};
-
+			console.log($scope.allRestaurants)
+		})
+	}
+	getAllRestaurants();
 })
 
-.controller('DashboardCtrl', function($scope) {
+.controller('AddCtrl', function($scope, Upload, ParseObject, ParseQuery) {
 
-})
+	$scope.$watch('file', function (file) {
+		$scope.upload($scope.file);
+	});
 
-.controller('ClubsCtrl', function($scope, ParseObject, ParseQuery) {
+	$scope.upload = function (file) {
+		Upload.upload({
+			url: 'upload/url',
+			fields: {'username': $scope.username},
+			file: file
+		}).progress(function (evt) {
+			var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+			console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+		}).success(function (data, status, headers, config) {
+			console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+		}).error(function (data, status, headers, config) {
+			console.log('error status: ' + status);
+		})
+	};
 
-	function getAllClub(){
-      var query = new Parse.Query('Club');
-      ParseQuery(query, {functionToCall:'find'}).then(function(clubs){
-        $scope.allClubs = [];
-        for(var i=0; i<clubs.length; i++)
-        {
-          $scope.allClubs.push(new ParseObject(clubs[i]), "clubId");
-        }
-        console.log($scope.allClubs)
-      })
-    }
-    getAllClub();
 
-	$scope.newClub = new ParseObject('Club', ['clubId','clubAddres','clubSecret','clubLogoImage']);
+
+	$scope.newRestaurant = new ParseObject('Restaurants', ['restaurantId','restaurantAddress','restaurantLogoImage']);
 });

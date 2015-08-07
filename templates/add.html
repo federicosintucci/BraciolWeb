@@ -1,0 +1,38 @@
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			
+			<form class="form-addClub">
+
+				<div class="form-group">
+					<label for="InputClubName">Nome ristorante</label>
+					<input type="text" class="form-control input-lg" id="InputClubName" placeholder="Name" ng-model="newClub.clubId">
+				</div>
+
+				<div class="form-group">
+					<label for="InputClubAddres">Indirizzo ristorante</label>
+					<input type="text" class="form-control input-lg" id="InputClubAddres" placeholder="Address" ng-model="newClub.clubAddres">
+				</div>
+
+				<div class="form-group">
+					<label for="InputClubLogo">Logo ristorante</label>
+
+					<div ngf-drop ng-model="files" class="drop-box" 
+					ngf-drag-over-class="dragover" ngf-multiple="true" ngf-allow-dir="true"
+					ngf-accept="'image/*,application/pdf'">Drop Images or PDFs files here</div>
+					<div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+
+
+					<!-- <input type="file" name="..." ng-model="newClub.clubLogoImage"> -->
+
+					<img ngf-src="file" ngf-default-src="'/thumb.jpg'" ngf-accept="'image/*'">
+					
+				</div>
+
+				<button class="btn btn-lg btn-primary btn-block" ng-click="newRestaurant.save()">Add Restaurant</button>
+
+			</form>
+
+		</div>
+	</div>
+</div>

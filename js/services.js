@@ -1,1 +1,1 @@
-angular.module('fitTime.services', ['ngResource']);
+angular.module('app.services', ['ngResource', 'LocalStorageModule']);
